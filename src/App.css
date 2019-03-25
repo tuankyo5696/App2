@@ -54,6 +54,7 @@
 .text-right {
   float: right;
   cursor: pointer;
+   
 }
 
 .text-right:hover {

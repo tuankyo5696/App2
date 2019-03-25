@@ -9,7 +9,8 @@ class App extends Component {
   constructor(props){
     super(props);
     this.state = {
-      tasks: [] // id, name, status
+      tasks: [], // id, name, status,
+      isDisplayForm: false
     }
     }
   componentWillMount(){
@@ -35,7 +36,7 @@ class App extends Component {
         {
           id: this.generateID(),
           name: 'Đi ngủ',
-          status: true
+          status: false
         }
       ]
       this.setState({
@@ -49,19 +50,47 @@ class App extends Component {
   generateID(){
     return this.s4()+ this.s4() + this.s4() + '-' + this.s4() + '-'+ this.s4()+'-'+ this.s4()+'-'+ this.s4()+ '-'+ this.s4()
   }
+  onToggleForm =() =>{
+      this.setState({
+        isDisplayForm: !this.state.isDisplayForm
+      })
+  }
+  onCloseForm =() =>{
+    this.setState({
+      isDisplayForm: false
+    })
+  }
+  onSubmit = (data)=>{
+    let {tasks} =this.state;
+    data.id = this.generateID()
+    tasks.push(data)
+    this.setState({
+      tasks: tasks
+    })
+    localStorage.setItem('tasks',JSON.stringify(tasks));
+  }
   render() {
+    let {tasks,isDisplayForm}= this.state;
+    let elmTaskForm = isDisplayForm
+          ? <TaskForm onSubmit ={this.onSubmit} 
+                      onCloseForm={this.onCloseForm}/> 
+          :''
     return (
+     
         <div className="container">
             <div className="text-center">
                 <h1>Quản lý công việc</h1>
             </div>
             
             <div className="row">
-                <div className="col-xs-4 col-sm-4 col-md-4 col-lg-4">
-                    <TaskForm/>
+                <div className={isDisplayForm? "col-xs-4 col-sm-4 col-md-4 col-lg-4" : ""}>
+                    {elmTaskForm}
                 </div>
-                <div className="col-xs-8 col-sm-8 col-md-8 col-lg-8">
-                    <button type="button" className="btn btn-primary">
+                <div className={isDisplayForm ? "col-xs-8 col-sm-8 col-md-8 col-lg-8":"col-xs-12 col-sm-12 col-md-12 col-lg-12"}>
+                    <button type="button"
+                           className="btn btn-primary"
+                           onClick = {this.onToggleForm}
+                           >
                         <span className="fa fa-plus mr-5"></span>Thêm công việc
                     </button>
                     <button type="button" 
@@ -73,7 +102,9 @@ class App extends Component {
                         {/* {<!-- { Search-Sort} -->} */}
                               <TaskControl/>
                         {/* <!-- List --> */}
-                              <TaskList/>
+                              <TaskList
+                                tasks = {tasks}
+                              />
                 </div>
                 
             </div>

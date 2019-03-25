@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
-
+import TaskItem from './TaskItem';
 class App extends Component {
   render() {
+    let {tasks} = this.props
+    let elmtasks = tasks.map((task,index)=>{
+            return <TaskItem key={task.id}
+                             index={index}
+                             task ={task}
+
+            />
+    })
     return (
         <div className="row mt-15">
                             <div className="col-xs-12 col-sm-12 col-md-12 col-lg-12">
@@ -38,7 +46,7 @@ class App extends Component {
                                             </td>
                                             <td></td>
                                         </tr>
-                                          
+                                    {elmtasks}
                                     </tbody>
                                 </table>
                                 
