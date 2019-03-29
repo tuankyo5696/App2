@@ -7,7 +7,9 @@ class TaskControl extends Component {
     
                         <div className="row mt-15">   
                             {/* <!-- Search --> */}
-                           <TaskSearch/>    
+                           <TaskSearch 
+                            onSearch = {this.props.onSearch}
+                           />    
                             {/* <!-- Sort --> */}
                            <TaskSort/>
                         </div>
